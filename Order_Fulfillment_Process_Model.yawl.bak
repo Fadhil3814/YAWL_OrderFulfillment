@@ -1,0 +1,3293 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<specificationSet xmlns="http://www.yawlfoundation.org/yawlschema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="4.0" xsi:schemaLocation="http://www.yawlfoundation.org/yawlschema http://www.yawlfoundation.org/yawlschema/YAWL_Schema4.0.xsd">
+  <specification uri="Order_Fulfillment_Process_Model">
+    <name>Genko_Oil_Order_Fulfillment_Process</name>
+    <documentation>No description provided</documentation>
+    <metaData>
+      <title>Genko_Oil_Order_Fulfillment_Process</title>
+      <creator>mfadh</creator>
+      <description>No description provided</description>
+      <coverage>4.3.1.772</coverage>
+      <version>0.4</version>
+      <persistent>false</persistent>
+      <identifier>UID_ef532ec7-b03f-44b8-8da2-3d8da8dfc72b</identifier>
+    </metaData>
+    <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+    <decomposition id="Net" isRootNet="true" xsi:type="NetFactsType">
+      <processControlElements>
+        <inputCondition id="InputCondition">
+          <flowsInto>
+            <nextElementRef id="Ordering" />
+          </flowsInto>
+        </inputCondition>
+        <task id="Ordering">
+          <name>Ordering</name>
+          <flowsInto>
+            <nextElementRef id="OutputCondition" />
+            <isDefaultFlow />
+          </flowsInto>
+          <flowsInto>
+            <nextElementRef id="Carrier_Appointment" />
+            <predicate ordering="0">true()</predicate>
+          </flowsInto>
+          <join code="and" />
+          <split code="xor" />
+          <decomposesTo id="Ordering" />
+        </task>
+        <task id="Carrier_Appointment">
+          <name>Carrier Appointment</name>
+          <flowsInto>
+            <nextElementRef id="Payment" />
+            <predicate>true()</predicate>
+            <isDefaultFlow />
+          </flowsInto>
+          <flowsInto>
+            <nextElementRef id="OutputCondition" />
+            <predicate>true()</predicate>
+          </flowsInto>
+          <flowsInto>
+            <nextElementRef id="Freight_in_Transit" />
+            <predicate>true()</predicate>
+          </flowsInto>
+          <join code="and" />
+          <split code="or" />
+          <decomposesTo id="Carrier_Appointment" />
+        </task>
+        <task id="Freight_in_Transit">
+          <name>Freight in Transit</name>
+          <flowsInto>
+            <nextElementRef id="Freight_Delivered" />
+            <isDefaultFlow />
+          </flowsInto>
+          <join code="and" />
+          <split code="xor" />
+          <decomposesTo id="Freight_in_Transit" />
+        </task>
+        <task id="Payment">
+          <name>Payment</name>
+          <flowsInto>
+            <nextElementRef id="Freight_Delivered" />
+            <isDefaultFlow />
+          </flowsInto>
+          <join code="and" />
+          <split code="xor" />
+          <decomposesTo id="Payment" />
+        </task>
+        <task id="Freight_Delivered">
+          <name>Freight Delivered</name>
+          <flowsInto>
+            <nextElementRef id="OutputCondition" />
+            <isDefaultFlow />
+          </flowsInto>
+          <join code="and" />
+          <split code="xor" />
+          <decomposesTo id="Freight_Delivered" />
+        </task>
+        <outputCondition id="OutputCondition" />
+      </processControlElements>
+    </decomposition>
+    <decomposition id="Carrier_Appointment" xsi:type="NetFactsType">
+      <processControlElements>
+        <inputCondition id="InputCondition_2">
+          <flowsInto>
+            <nextElementRef id="T_6" />
+          </flowsInto>
+        </inputCondition>
+        <task id="T_6">
+          <flowsInto>
+            <nextElementRef id="C_3" />
+          </flowsInto>
+          <flowsInto>
+            <nextElementRef id="C_5" />
+          </flowsInto>
+          <flowsInto>
+            <nextElementRef id="C_7" />
+          </flowsInto>
+          <join code="and" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="user" />
+            <allocate initiator="user" />
+            <start initiator="user" />
+          </resourcing>
+        </task>
+        <condition id="C_3">
+          <flowsInto>
+            <nextElementRef id="Estimate_Trailer_Usage" />
+          </flowsInto>
+        </condition>
+        <condition id="C_5">
+          <flowsInto>
+            <nextElementRef id="Prepare_Route_Guide" />
+          </flowsInto>
+        </condition>
+        <condition id="C_7">
+          <flowsInto>
+            <nextElementRef id="Carrier_Timeout" />
+          </flowsInto>
+        </condition>
+        <task id="Carrier_Timeout">
+          <name>Carrier Timeout</name>
+          <flowsInto>
+            <nextElementRef id="OutputCondition_2" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="user" />
+            <allocate initiator="user" />
+            <start initiator="user" />
+          </resourcing>
+        </task>
+        <task id="Estimate_Trailer_Usage">
+          <name>Estimate Trailer Usage</name>
+          <flowsInto>
+            <nextElementRef id="C_4" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="user" />
+            <allocate initiator="user" />
+            <start initiator="user" />
+          </resourcing>
+        </task>
+        <task id="Prepare_Route_Guide">
+          <name>Prepare Route Guide</name>
+          <flowsInto>
+            <nextElementRef id="C_6" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="user" />
+            <allocate initiator="user" />
+            <start initiator="user" />
+          </resourcing>
+        </task>
+        <condition id="C_4">
+          <flowsInto>
+            <nextElementRef id="Prepare_Transportation_Quote" />
+          </flowsInto>
+        </condition>
+        <condition id="C_6">
+          <flowsInto>
+            <nextElementRef id="Prepare_Transportation_Quote" />
+          </flowsInto>
+        </condition>
+        <task id="Prepare_Transportation_Quote">
+          <name>Prepare Transportation Quote</name>
+          <flowsInto>
+            <nextElementRef id="T_11" />
+            <predicate ordering="1">true()</predicate>
+          </flowsInto>
+          <flowsInto>
+            <nextElementRef id="Arrange_Pickup_Appointment" />
+            <predicate ordering="0">true()</predicate>
+          </flowsInto>
+          <flowsInto>
+            <nextElementRef id="C_8" />
+            <isDefaultFlow />
+          </flowsInto>
+          <join code="and" />
+          <split code="xor" />
+          <resourcing>
+            <offer initiator="user" />
+            <allocate initiator="user" />
+            <start initiator="user" />
+          </resourcing>
+        </task>
+        <condition id="C_8">
+          <flowsInto>
+            <nextElementRef id="Arrange_Delivery_Appointment_2" />
+          </flowsInto>
+          <flowsInto>
+            <nextElementRef id="Arrange_Pickup_Appointment_2" />
+          </flowsInto>
+          <flowsInto>
+            <nextElementRef id="T_12" />
+          </flowsInto>
+        </condition>
+        <task id="Arrange_Delivery_Appointment_2">
+          <name>Arrange Delivery Appointment</name>
+          <flowsInto>
+            <nextElementRef id="C_11" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="user" />
+            <allocate initiator="user" />
+            <start initiator="user" />
+          </resourcing>
+        </task>
+        <task id="Arrange_Pickup_Appointment">
+          <name>Arrange Pickup Appointment</name>
+          <flowsInto>
+            <nextElementRef id="Arange_Delivery_Appointment" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="user" />
+            <allocate initiator="user" />
+            <start initiator="user" />
+          </resourcing>
+        </task>
+        <task id="Arrange_Pickup_Appointment_2">
+          <name>Arrange Pickup Appointment</name>
+          <flowsInto>
+            <nextElementRef id="C_12" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="user" />
+            <allocate initiator="user" />
+            <start initiator="user" />
+          </resourcing>
+        </task>
+        <task id="T_11">
+          <flowsInto>
+            <nextElementRef id="Arrange_Pickup_Appointment_1" />
+          </flowsInto>
+          <flowsInto>
+            <nextElementRef id="C_9" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="user" />
+            <allocate initiator="user" />
+            <start initiator="user" />
+          </resourcing>
+        </task>
+        <task id="T_12">
+          <flowsInto>
+            <nextElementRef id="C_10" />
+            <predicate>true()</predicate>
+          </flowsInto>
+          <flowsInto>
+            <nextElementRef id="T_14" />
+            <predicate>true()</predicate>
+            <isDefaultFlow />
+          </flowsInto>
+          <flowsInto>
+            <nextElementRef id="T_13" />
+            <predicate>true()</predicate>
+          </flowsInto>
+          <join code="xor" />
+          <split code="or" />
+          <resourcing>
+            <offer initiator="user" />
+            <allocate initiator="user" />
+            <start initiator="user" />
+          </resourcing>
+        </task>
+        <condition id="C_10">
+          <flowsInto>
+            <nextElementRef id="Produce_Shipment_Notice" />
+          </flowsInto>
+          <flowsInto>
+            <nextElementRef id="Modify_Delivery_Appointment_1" />
+          </flowsInto>
+          <flowsInto>
+            <nextElementRef id="Modify_Pickup_Appointment" />
+          </flowsInto>
+        </condition>
+        <condition id="C_11">
+          <flowsInto>
+            <nextElementRef id="T_12" />
+          </flowsInto>
+          <flowsInto>
+            <nextElementRef id="Arrange_Pickup_Appointment_3" />
+          </flowsInto>
+        </condition>
+        <condition id="C_12">
+          <flowsInto>
+            <nextElementRef id="Arrange_Delivery_Appointment_3" />
+          </flowsInto>
+          <flowsInto>
+            <nextElementRef id="T_12" />
+          </flowsInto>
+        </condition>
+        <condition id="C_9">
+          <flowsInto>
+            <nextElementRef id="Create_Bill_of_Lading" />
+          </flowsInto>
+          <flowsInto>
+            <nextElementRef id="Arrange_Delivery_Appointment" />
+          </flowsInto>
+        </condition>
+        <task id="Arange_Delivery_Appointment">
+          <name>Arange Delivery Appointment</name>
+          <flowsInto>
+            <nextElementRef id="Create_Career_Manifest" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="user" />
+            <allocate initiator="user" />
+            <start initiator="user" />
+          </resourcing>
+        </task>
+        <task id="Arrange_Delivery_Appointment">
+          <name>Arrange Delivery Appointment</name>
+          <flowsInto>
+            <nextElementRef id="Create_Bill_of_Lading" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="user" />
+            <allocate initiator="user" />
+            <start initiator="user" />
+          </resourcing>
+        </task>
+        <task id="Arrange_Delivery_Appointment_3">
+          <name>Arrange Delivery Appointment</name>
+          <flowsInto>
+            <nextElementRef id="T_12" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="user" />
+            <allocate initiator="user" />
+            <start initiator="user" />
+          </resourcing>
+        </task>
+        <task id="Arrange_Pickup_Appointment_1">
+          <name>Arrange Pickup Appointment</name>
+          <flowsInto>
+            <nextElementRef id="Create_Bill_of_Lading" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="user" />
+            <allocate initiator="user" />
+            <start initiator="user" />
+          </resourcing>
+        </task>
+        <task id="Arrange_Pickup_Appointment_3">
+          <name>Arrange Pickup Appointment</name>
+          <flowsInto>
+            <nextElementRef id="T_12" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="user" />
+            <allocate initiator="user" />
+            <start initiator="user" />
+          </resourcing>
+        </task>
+        <task id="Create_Bill_of_Lading">
+          <name>Create Bill of Lading</name>
+          <flowsInto>
+            <nextElementRef id="C_10" />
+            <isDefaultFlow />
+          </flowsInto>
+          <flowsInto>
+            <nextElementRef id="Arrange_Delivery_Appointment_1" />
+            <predicate ordering="0">true()</predicate>
+          </flowsInto>
+          <join code="and" />
+          <split code="xor" />
+          <resourcing>
+            <offer initiator="user" />
+            <allocate initiator="user" />
+            <start initiator="user" />
+          </resourcing>
+        </task>
+        <task id="Modify_Delivery_Appointment_1">
+          <name>Modify Delivery Appointment</name>
+          <flowsInto>
+            <nextElementRef id="C_13" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="user" />
+            <allocate initiator="user" />
+            <start initiator="user" />
+          </resourcing>
+        </task>
+        <task id="Modify_Pickup_Appointment">
+          <name>Modify Pickup Appointment</name>
+          <flowsInto>
+            <nextElementRef id="C_14" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="user" />
+            <allocate initiator="user" />
+            <start initiator="user" />
+          </resourcing>
+        </task>
+        <task id="Produce_Shipment_Notice">
+          <name>Produce Shipment Notice</name>
+          <flowsInto>
+            <nextElementRef id="OutputCondition_2" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="user" />
+            <allocate initiator="user" />
+            <start initiator="user" />
+          </resourcing>
+        </task>
+        <task id="T_13">
+          <flowsInto>
+            <nextElementRef id="T_15" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="user" />
+            <allocate initiator="user" />
+            <start initiator="user" />
+          </resourcing>
+        </task>
+        <task id="T_14">
+          <flowsInto>
+            <nextElementRef id="T_15" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="user" />
+            <allocate initiator="user" />
+            <start initiator="user" />
+          </resourcing>
+        </task>
+        <condition id="C_13">
+          <flowsInto>
+            <nextElementRef id="Produce_Shipment_Notice" />
+          </flowsInto>
+          <flowsInto>
+            <nextElementRef id="Modify_Pickup_Appointment_1" />
+          </flowsInto>
+        </condition>
+        <condition id="C_14">
+          <flowsInto>
+            <nextElementRef id="Produce_Shipment_Notice" />
+          </flowsInto>
+          <flowsInto>
+            <nextElementRef id="Modify_Delivery_Appointment" />
+          </flowsInto>
+        </condition>
+        <task id="Arrange_Delivery_Appointment_1">
+          <name>Arrange Delivery Appointment</name>
+          <flowsInto>
+            <nextElementRef id="C_10" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="user" />
+            <allocate initiator="user" />
+            <start initiator="user" />
+          </resourcing>
+        </task>
+        <task id="Create_Career_Manifest">
+          <name>Create Career Manifest</name>
+          <flowsInto>
+            <nextElementRef id="Produce_Shipment_Notice" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="user" />
+            <allocate initiator="user" />
+            <start initiator="user" />
+          </resourcing>
+        </task>
+        <task id="Modify_Delivery_Appointment">
+          <name>Modify Delivery Appointment</name>
+          <flowsInto>
+            <nextElementRef id="Produce_Shipment_Notice" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="user" />
+            <allocate initiator="user" />
+            <start initiator="user" />
+          </resourcing>
+        </task>
+        <task id="Modify_Pickup_Appointment_1">
+          <name>Modify Pickup Appointment</name>
+          <flowsInto>
+            <nextElementRef id="Produce_Shipment_Notice" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="user" />
+            <allocate initiator="user" />
+            <start initiator="user" />
+          </resourcing>
+        </task>
+        <task id="T_15">
+          <flowsInto>
+            <nextElementRef id="C_10" />
+          </flowsInto>
+          <join code="or" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="user" />
+            <allocate initiator="user" />
+            <start initiator="user" />
+          </resourcing>
+        </task>
+        <outputCondition id="OutputCondition_2" />
+      </processControlElements>
+    </decomposition>
+    <decomposition id="Freight_Delivered" xsi:type="NetFactsType">
+      <processControlElements>
+        <inputCondition id="InputCondition_5">
+          <flowsInto>
+            <nextElementRef id="Claims_Timeout" />
+          </flowsInto>
+          <flowsInto>
+            <nextElementRef id="Lodge_Loss_or_Damage_Claim_Report" />
+          </flowsInto>
+          <flowsInto>
+            <nextElementRef id="Lodge_a_Request_for_Return_Merchandise" />
+          </flowsInto>
+        </inputCondition>
+        <task id="Claims_Timeout">
+          <name>Claims_Timeout</name>
+          <flowsInto>
+            <nextElementRef id="OutputCondition_5" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="user" />
+            <allocate initiator="user" />
+            <start initiator="user" />
+          </resourcing>
+          <decomposesTo id="Claims_Timeout" />
+        </task>
+        <task id="Lodge_Loss_or_Damage_Claim_Report">
+          <name>Lodge Loss or Damage Claim Report</name>
+          <flowsInto>
+            <nextElementRef id="Authorize_Loss_or_Damage_Claim" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="user" />
+            <allocate initiator="user" />
+            <start initiator="user" />
+          </resourcing>
+          <decomposesTo id="Lodge_Loss_or_Damage_Claim_Report" />
+        </task>
+        <task id="Lodge_a_Request_for_Return_Merchandise">
+          <name>Lodge a Request for Return Merchandise</name>
+          <flowsInto>
+            <nextElementRef id="Authorize_Return_Merchandise" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="user" />
+            <allocate initiator="user" />
+            <start initiator="user" />
+          </resourcing>
+          <decomposesTo id="Lodge_a_Request_for_Return_Merchandise" />
+        </task>
+        <task id="Authorize_Loss_or_Damage_Claim">
+          <name>Authorize Loss or Damage Claim</name>
+          <flowsInto>
+            <nextElementRef id="OutputCondition_5" />
+            <isDefaultFlow />
+          </flowsInto>
+          <flowsInto>
+            <nextElementRef id="Loss_or_Damage_Management" />
+            <predicate ordering="0">true()</predicate>
+          </flowsInto>
+          <join code="xor" />
+          <split code="xor" />
+          <resourcing>
+            <offer initiator="user" />
+            <allocate initiator="user" />
+            <start initiator="user" />
+          </resourcing>
+          <decomposesTo id="Authorize_Loss_or_Damage_Claim" />
+        </task>
+        <task id="Authorize_Return_Merchandise">
+          <name>Authorize Return Merchandise</name>
+          <flowsInto>
+            <nextElementRef id="OutputCondition_5" />
+            <isDefaultFlow />
+          </flowsInto>
+          <flowsInto>
+            <nextElementRef id="Return_Management" />
+            <predicate ordering="0">true()</predicate>
+          </flowsInto>
+          <join code="xor" />
+          <split code="xor" />
+          <resourcing>
+            <offer initiator="user" />
+            <allocate initiator="user" />
+            <start initiator="user" />
+          </resourcing>
+          <decomposesTo id="Authorize_Return_Merchandise" />
+        </task>
+        <task id="Loss_or_Damage_Management">
+          <name>Loss or Damage Management</name>
+          <flowsInto>
+            <nextElementRef id="OutputCondition_5" />
+            <isDefaultFlow />
+          </flowsInto>
+          <join code="and" />
+          <split code="xor" />
+          <decomposesTo id="Loss_or_Damage_Management" />
+        </task>
+        <task id="Return_Management">
+          <name>Return Management</name>
+          <flowsInto>
+            <nextElementRef id="OutputCondition_5" />
+            <isDefaultFlow />
+          </flowsInto>
+          <join code="and" />
+          <split code="xor" />
+          <decomposesTo id="Return_Management" />
+        </task>
+        <outputCondition id="OutputCondition_5" />
+      </processControlElements>
+    </decomposition>
+    <decomposition id="Freight_in_Transit" xsi:type="NetFactsType">
+      <processControlElements>
+        <inputCondition id="InputCondition_4">
+          <flowsInto>
+            <nextElementRef id="T_5" />
+          </flowsInto>
+        </inputCondition>
+        <task id="T_5">
+          <flowsInto>
+            <nextElementRef id="C_2" />
+          </flowsInto>
+          <flowsInto>
+            <nextElementRef id="Issue_Trackpoint_Label" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="user" />
+            <allocate initiator="user" />
+            <start initiator="user" />
+          </resourcing>
+        </task>
+        <condition id="C_2">
+          <flowsInto>
+            <nextElementRef id="Initiate_Shipment_Status_Inquiry" />
+          </flowsInto>
+          <flowsInto>
+            <nextElementRef id="Create_Acceptance_Certificate" />
+          </flowsInto>
+        </condition>
+        <task id="Create_Acceptance_Certificate">
+          <name>Create Acceptance Certificate</name>
+          <flowsInto>
+            <nextElementRef id="OutputCondition_4" />
+          </flowsInto>
+          <join code="and" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="user" />
+            <allocate initiator="user" />
+            <start initiator="user" />
+          </resourcing>
+        </task>
+        <task id="Initiate_Shipment_Status_Inquiry">
+          <name>Initiate Shipment Status Inquiry</name>
+          <flowsInto>
+            <nextElementRef id="C_2" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="user" />
+            <allocate initiator="user" />
+            <start initiator="user" />
+          </resourcing>
+        </task>
+        <task id="Issue_Trackpoint_Label">
+          <name>Issue Trackpoint Label</name>
+          <flowsInto>
+            <nextElementRef id="C_1" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="user" />
+            <allocate initiator="user" />
+            <start initiator="user" />
+          </resourcing>
+        </task>
+        <condition id="C_1">
+          <flowsInto>
+            <nextElementRef id="Log_Trackpoint_Label_Entry" />
+          </flowsInto>
+          <flowsInto>
+            <nextElementRef id="Issue_Trackpoint_Label" />
+          </flowsInto>
+        </condition>
+        <task id="Log_Trackpoint_Label_Entry" xsi:type="MultipleInstanceExternalTaskFactsType">
+          <name>Log Trackpoint Label Entry</name>
+          <flowsInto>
+            <nextElementRef id="Create_Acceptance_Certificate" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="user" />
+            <allocate initiator="user" />
+            <start initiator="user" />
+          </resourcing>
+          <minimum>1</minimum>
+          <maximum>2</maximum>
+          <threshold>2</threshold>
+          <creationMode code="static" />
+          <miDataInput>
+            <expression query="null" />
+            <splittingExpression query="null" />
+            <formalInputParam>null</formalInputParam>
+          </miDataInput>
+        </task>
+        <outputCondition id="OutputCondition_4" />
+      </processControlElements>
+    </decomposition>
+    <decomposition id="Loss_or_Damage_Management" xsi:type="NetFactsType">
+      <name>Loss or Damage Management</name>
+      <processControlElements>
+        <inputCondition id="InputCondition_6" />
+        <outputCondition id="OutputCondition_6" />
+      </processControlElements>
+    </decomposition>
+    <decomposition id="Ordering" xsi:type="NetFactsType">
+      <processControlElements>
+        <inputCondition id="InputCondition_1">
+          <flowsInto>
+            <nextElementRef id="Create_Purchase_Order" />
+          </flowsInto>
+        </inputCondition>
+        <task id="Create_Purchase_Order">
+          <name>Create Purchase Order</name>
+          <flowsInto>
+            <nextElementRef id="Approve_Purchase_Order" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="user" />
+            <allocate initiator="user" />
+            <start initiator="user" />
+          </resourcing>
+          <decomposesTo id="Create_Purchase_Order" />
+        </task>
+        <task id="Approve_Purchase_Order">
+          <name>Approve Purchase Order</name>
+          <flowsInto>
+            <nextElementRef id="C" />
+            <predicate ordering="0">true()</predicate>
+          </flowsInto>
+          <flowsInto>
+            <nextElementRef id="OutputCondition_1" />
+            <isDefaultFlow />
+          </flowsInto>
+          <join code="xor" />
+          <split code="xor" />
+          <resourcing>
+            <offer initiator="user" />
+            <allocate initiator="user" />
+            <start initiator="user" />
+          </resourcing>
+          <decomposesTo id="Approve_Purchase_Order" />
+        </task>
+        <condition id="C">
+          <flowsInto>
+            <nextElementRef id="Modify_Purchase_Order" />
+          </flowsInto>
+          <flowsInto>
+            <nextElementRef id="Confirm_Purchase_Order" />
+          </flowsInto>
+          <flowsInto>
+            <nextElementRef id="Order_Timeout" />
+          </flowsInto>
+        </condition>
+        <task id="Confirm_Purchase_Order">
+          <name>Confirm Purchase Order</name>
+          <flowsInto>
+            <nextElementRef id="OutputCondition_1" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="user" />
+            <allocate initiator="user" />
+            <start initiator="user" />
+          </resourcing>
+          <decomposesTo id="Confirm_Purchase_Order" />
+        </task>
+        <task id="Modify_Purchase_Order">
+          <name>Modify Purchase Order</name>
+          <flowsInto>
+            <nextElementRef id="Approve_Purchase_Order" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="user" />
+            <allocate initiator="user" />
+            <start initiator="user" />
+          </resourcing>
+          <decomposesTo id="Modify_Purchase_Order" />
+        </task>
+        <task id="Order_Timeout">
+          <name>Order Timeout</name>
+          <flowsInto>
+            <nextElementRef id="OutputCondition_1" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="user" />
+            <allocate initiator="user" />
+            <start initiator="user" />
+          </resourcing>
+          <decomposesTo id="Order_Timeout" />
+        </task>
+        <outputCondition id="OutputCondition_1" />
+      </processControlElements>
+    </decomposition>
+    <decomposition id="Payment" xsi:type="NetFactsType">
+      <processControlElements>
+        <inputCondition id="InputCondition_3">
+          <flowsInto>
+            <nextElementRef id="T_4" />
+          </flowsInto>
+        </inputCondition>
+        <task id="T_4">
+          <flowsInto>
+            <nextElementRef id="Issue_Shipment_Invoice" />
+          </flowsInto>
+          <flowsInto>
+            <nextElementRef id="T_1" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="user" />
+            <allocate initiator="user" />
+            <start initiator="user" />
+          </resourcing>
+        </task>
+        <task id="Issue_Shipment_Invoice">
+          <name>Issue Shipment Invoice</name>
+          <flowsInto>
+            <nextElementRef id="Issue_Shipment_Payment_Order" />
+            <isDefaultFlow />
+          </flowsInto>
+          <flowsInto>
+            <nextElementRef id="Issue_Shipment_Remittance_Advice" />
+            <predicate ordering="0">true()</predicate>
+          </flowsInto>
+          <join code="and" />
+          <split code="xor" />
+          <resourcing>
+            <offer initiator="user" />
+            <allocate initiator="user" />
+            <start initiator="user" />
+          </resourcing>
+          <decomposesTo id="Issue_Shipment_Invoice" />
+        </task>
+        <task id="T_1">
+          <flowsInto>
+            <nextElementRef id="Produce_Freight_Invoice" />
+            <isDefaultFlow />
+          </flowsInto>
+          <flowsInto>
+            <nextElementRef id="T_2" />
+            <predicate ordering="0">true()</predicate>
+          </flowsInto>
+          <join code="xor" />
+          <split code="xor" />
+          <resourcing>
+            <offer initiator="user" />
+            <allocate initiator="user" />
+            <start initiator="user" />
+          </resourcing>
+        </task>
+        <task id="Issue_Shipment_Payment_Order">
+          <name>Issue Shipment Payment Order</name>
+          <flowsInto>
+            <nextElementRef id="Approve_Shipment_Payment_Order" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="user" />
+            <allocate initiator="user" />
+            <start initiator="user" />
+          </resourcing>
+          <decomposesTo id="Issue_Shipment_Payment_Order" />
+        </task>
+        <task id="Issue_Shipment_Remittance_Advice">
+          <name>Issue Shipment Remittance Advice</name>
+          <flowsInto>
+            <nextElementRef id="T" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="user" />
+            <allocate initiator="user" />
+            <start initiator="user" />
+          </resourcing>
+          <decomposesTo id="Issue_Shipment_Remittance_Advice" />
+        </task>
+        <task id="Produce_Freight_Invoice">
+          <name>Produce Freight Invoice</name>
+          <flowsInto>
+            <nextElementRef id="T_2" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="user" />
+            <allocate initiator="user" />
+            <start initiator="user" />
+          </resourcing>
+          <decomposesTo id="Produce_Freight_Invoice" />
+        </task>
+        <task id="T_2">
+          <flowsInto>
+            <nextElementRef id="Process_Freight_Payment" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="user" />
+            <allocate initiator="user" />
+            <start initiator="user" />
+          </resourcing>
+        </task>
+        <task id="Approve_Shipment_Payment_Order">
+          <name>Approve Shipment Payment Order</name>
+          <flowsInto>
+            <nextElementRef id="Update_Shipment_Payment_Order" />
+            <isDefaultFlow />
+          </flowsInto>
+          <flowsInto>
+            <nextElementRef id="Process_Shipment_Payment" />
+            <predicate ordering="0">true()</predicate>
+          </flowsInto>
+          <join code="xor" />
+          <split code="xor" />
+          <resourcing>
+            <offer initiator="user" />
+            <allocate initiator="user" />
+            <start initiator="user" />
+          </resourcing>
+          <decomposesTo id="Approve_Shipment_Payment_Order" />
+        </task>
+        <task id="Process_Freight_Payment">
+          <name>Process Freight Payment</name>
+          <flowsInto>
+            <nextElementRef id="T_3" />
+            <isDefaultFlow />
+          </flowsInto>
+          <join code="and" />
+          <split code="xor" />
+          <decomposesTo id="Process_Freight_Payment" />
+        </task>
+        <task id="T">
+          <flowsInto>
+            <nextElementRef id="T_3" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="user" />
+            <allocate initiator="user" />
+            <start initiator="user" />
+          </resourcing>
+        </task>
+        <task id="Process_Shipment_Payment">
+          <name>Process Shipment Payment</name>
+          <flowsInto>
+            <nextElementRef id="T" />
+            <predicate ordering="0">true()</predicate>
+          </flowsInto>
+          <flowsInto>
+            <nextElementRef id="Issue_Credit_Adjusment" />
+            <predicate ordering="1">true()</predicate>
+          </flowsInto>
+          <flowsInto>
+            <nextElementRef id="Issue_Debit_Adjusment" />
+            <isDefaultFlow />
+          </flowsInto>
+          <join code="xor" />
+          <split code="xor" />
+          <resourcing>
+            <offer initiator="user" />
+            <allocate initiator="user" />
+            <start initiator="user" />
+          </resourcing>
+          <decomposesTo id="Process_Shipment_Payment" />
+        </task>
+        <task id="T_3">
+          <flowsInto>
+            <nextElementRef id="OutputCondition_3" />
+          </flowsInto>
+          <join code="and" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="user" />
+            <allocate initiator="user" />
+            <start initiator="user" />
+          </resourcing>
+        </task>
+        <task id="Update_Shipment_Payment_Order">
+          <name>Update Shipment Payment Order</name>
+          <flowsInto>
+            <nextElementRef id="Approve_Shipment_Payment_Order" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="user" />
+            <allocate initiator="user" />
+            <start initiator="user" />
+          </resourcing>
+          <decomposesTo id="Update_Shipment_Payment_Order" />
+        </task>
+        <task id="Issue_Credit_Adjusment">
+          <name>Issue Credit Adjusment</name>
+          <flowsInto>
+            <nextElementRef id="T" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="user" />
+            <allocate initiator="user" />
+            <start initiator="user" />
+          </resourcing>
+          <decomposesTo id="Issue_Credit_Adjusment" />
+        </task>
+        <task id="Issue_Debit_Adjusment">
+          <name>Issue Debit Adjusment</name>
+          <flowsInto>
+            <nextElementRef id="Process_Shipment_Payment" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="user" />
+            <allocate initiator="user" />
+            <start initiator="user" />
+          </resourcing>
+        </task>
+        <outputCondition id="OutputCondition_3" />
+      </processControlElements>
+    </decomposition>
+    <decomposition id="Process_Freight_Payment" xsi:type="NetFactsType">
+      <name>Process Freight Payment</name>
+      <processControlElements>
+        <inputCondition id="InputCondition_8" />
+        <outputCondition id="OutputCondition_8" />
+      </processControlElements>
+    </decomposition>
+    <decomposition id="Return_Management" xsi:type="NetFactsType">
+      <name>Return Management</name>
+      <processControlElements>
+        <inputCondition id="InputCondition_7" />
+        <outputCondition id="OutputCondition_7" />
+      </processControlElements>
+    </decomposition>
+    <decomposition id="Approve_Purchase_Order" xsi:type="WebServiceGatewayFactsType">
+      <externalInteraction>manual</externalInteraction>
+    </decomposition>
+    <decomposition id="Approve_Shipment_Payment_Order" xsi:type="WebServiceGatewayFactsType">
+      <name>Approve Shipment Payment Order</name>
+      <externalInteraction>manual</externalInteraction>
+    </decomposition>
+    <decomposition id="Authorize_Loss_or_Damage_Claim" xsi:type="WebServiceGatewayFactsType">
+      <name>Authorize Loss or Damage Claim</name>
+      <externalInteraction>manual</externalInteraction>
+    </decomposition>
+    <decomposition id="Authorize_Return_Merchandise" xsi:type="WebServiceGatewayFactsType">
+      <externalInteraction>manual</externalInteraction>
+    </decomposition>
+    <decomposition id="Claims_Timeout" xsi:type="WebServiceGatewayFactsType">
+      <externalInteraction>manual</externalInteraction>
+    </decomposition>
+    <decomposition id="Confirm_Purchase_Order" xsi:type="WebServiceGatewayFactsType">
+      <name>Confirm Purchase Order</name>
+      <externalInteraction>manual</externalInteraction>
+    </decomposition>
+    <decomposition id="Create_Purchase_Order" xsi:type="WebServiceGatewayFactsType">
+      <name>Create Purchase Order</name>
+      <externalInteraction>manual</externalInteraction>
+    </decomposition>
+    <decomposition id="Issue_Credit_Adjusment" xsi:type="WebServiceGatewayFactsType">
+      <name>Issue Credit Adjusment</name>
+      <externalInteraction>manual</externalInteraction>
+    </decomposition>
+    <decomposition id="Issue_Shipment_Invoice" xsi:type="WebServiceGatewayFactsType">
+      <name>Issue Shipment Invoice</name>
+      <externalInteraction>manual</externalInteraction>
+    </decomposition>
+    <decomposition id="Issue_Shipment_Payment_Order" xsi:type="WebServiceGatewayFactsType">
+      <name>Issue Shipment Payment Order</name>
+      <externalInteraction>manual</externalInteraction>
+    </decomposition>
+    <decomposition id="Issue_Shipment_Remittance_Advice" xsi:type="WebServiceGatewayFactsType">
+      <name>Issue Shipment Remittance Advice</name>
+      <externalInteraction>manual</externalInteraction>
+    </decomposition>
+    <decomposition id="Lodge_Loss_or_Damage_Claim_Report" xsi:type="WebServiceGatewayFactsType">
+      <name>Lodge Loss or Damage Claim Report</name>
+      <externalInteraction>manual</externalInteraction>
+    </decomposition>
+    <decomposition id="Lodge_a_Request_for_Return_Merchandise" xsi:type="WebServiceGatewayFactsType">
+      <name>Lodge a Request for Return Merchandise</name>
+      <externalInteraction>manual</externalInteraction>
+    </decomposition>
+    <decomposition id="Modify_Purchase_Order" xsi:type="WebServiceGatewayFactsType">
+      <externalInteraction>manual</externalInteraction>
+    </decomposition>
+    <decomposition id="Order_Timeout" xsi:type="WebServiceGatewayFactsType">
+      <name>Order Timeout</name>
+      <externalInteraction>manual</externalInteraction>
+    </decomposition>
+    <decomposition id="Process_Shipment_Payment" xsi:type="WebServiceGatewayFactsType">
+      <name>Process Shipment Payment</name>
+      <externalInteraction>manual</externalInteraction>
+    </decomposition>
+    <decomposition id="Produce_Freight_Invoice" xsi:type="WebServiceGatewayFactsType">
+      <name>Produce Freight Invoice</name>
+      <externalInteraction>manual</externalInteraction>
+    </decomposition>
+    <decomposition id="Update_Shipment_Payment_Order" xsi:type="WebServiceGatewayFactsType">
+      <name>Update Shipment Payment Order</name>
+      <externalInteraction>manual</externalInteraction>
+    </decomposition>
+  </specification>
+  <layout>
+    <locale language="en" country="ID"/>
+    <specification id="Order_Fulfillment_Process_Model">
+      <size w="58" h="28"/>
+      <net id="Return_Management">
+        <bounds x="0" y="0" w="1296" h="601"/>
+        <frame x="0" y="0" w="1299" h="604"/>
+        <viewport x="0" y="0" w="1299" h="604"/>
+        <vertex id="OutputCondition_7">
+          <attributes>
+            <bounds x="1,228" y="328" w="32" h="32"/>
+          </attributes>
+        </vertex>
+        <vertex id="InputCondition_7">
+          <attributes>
+            <bounds x="36" y="328" w="32" h="32"/>
+          </attributes>
+        </vertex>
+      </net>
+      <net id="Process_Freight_Payment">
+        <bounds x="0" y="0" w="1296" h="601"/>
+        <frame x="0" y="0" w="1299" h="604"/>
+        <viewport x="0" y="0" w="1299" h="604"/>
+        <vertex id="OutputCondition_8">
+          <attributes>
+            <bounds x="1,228" y="328" w="32" h="32"/>
+          </attributes>
+        </vertex>
+        <vertex id="InputCondition_8">
+          <attributes>
+            <bounds x="36" y="328" w="32" h="32"/>
+          </attributes>
+        </vertex>
+      </net>
+      <net id="Payment" bgColor="-6684775">
+        <bounds x="-346" y="-342" w="1943" h="1133"/>
+        <frame x="0" y="0" w="1299" h="604"/>
+        <viewport x="0" y="0" w="1299" h="604"/>
+        <scale>1.0338464355467893</scale>
+        <vertex id="InputCondition_3">
+          <attributes>
+            <bounds x="36" y="364" w="32" h="32"/>
+          </attributes>
+        </vertex>
+        <vertex id="OutputCondition_3">
+          <attributes>
+            <bounds x="1,827" y="364" w="33" h="32"/>
+          </attributes>
+        </vertex>
+        <container id="Produce_Freight_Invoice">
+          <vertex>
+            <attributes>
+              <bounds x="504" y="64" w="40" h="41"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="466" y="105" w="122" h="42"/>
+            </attributes>
+          </label>
+        </container>
+        <container id="Issue_Shipment_Remittance_Advice">
+          <vertex>
+            <attributes>
+              <bounds x="499" y="475" w="40" h="40"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="458" y="516" w="120" h="60"/>
+            </attributes>
+          </label>
+        </container>
+        <container id="Process_Freight_Payment">
+          <vertex>
+            <attributes>
+              <bounds x="1,039" y="164" w="41" h="41"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="998" y="204" w="122" h="60"/>
+            </attributes>
+          </label>
+        </container>
+        <container id="Issue_Shipment_Invoice">
+          <vertex>
+            <attributes>
+              <bounds x="259" y="621" w="41" h="40"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="225" y="662" w="120" h="40"/>
+            </attributes>
+          </label>
+          <decorator type="XOR_split">
+            <position>13</position>
+            <attributes>
+              <bounds x="298" y="621" w="14" h="40"/>
+            </attributes>
+          </decorator>
+        </container>
+        <container id="Issue_Shipment_Payment_Order">
+          <vertex>
+            <attributes>
+              <bounds x="494" y="760" w="41" h="40"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="453" y="801" w="120" h="40"/>
+            </attributes>
+          </label>
+        </container>
+        <container id="T_2">
+          <vertex>
+            <attributes>
+              <bounds x="734" y="168" w="41" h="41"/>
+            </attributes>
+          </vertex>
+          <decorator type="XOR_join">
+            <position>12</position>
+            <attributes>
+              <bounds x="722" y="168" w="14" h="41"/>
+            </attributes>
+          </decorator>
+        </container>
+        <container id="Process_Shipment_Payment">
+          <vertex>
+            <attributes>
+              <bounds x="1,050" y="772" w="32" h="32"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="1,017" y="806" w="97" h="61"/>
+            </attributes>
+          </label>
+          <decorator type="XOR_split">
+            <position>13</position>
+            <attributes>
+              <bounds x="1,081" y="772" w="11" h="32"/>
+            </attributes>
+          </decorator>
+          <decorator type="XOR_join">
+            <position>12</position>
+            <attributes>
+              <bounds x="1,040" y="772" w="11" h="32"/>
+            </attributes>
+          </decorator>
+        </container>
+        <container id="T_1">
+          <vertex>
+            <attributes>
+              <bounds x="297" y="167" w="40" h="40"/>
+            </attributes>
+          </vertex>
+          <decorator type="XOR_split">
+            <position>13</position>
+            <attributes>
+              <bounds x="336" y="167" w="13" h="40"/>
+            </attributes>
+          </decorator>
+        </container>
+        <container id="Issue_Credit_Adjusment">
+          <vertex>
+            <attributes>
+              <bounds x="1,468" y="778" w="37" h="37"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="1,439" y="814" w="96" h="40"/>
+            </attributes>
+          </label>
+        </container>
+        <container id="T_4">
+          <vertex>
+            <attributes>
+              <bounds x="164" y="364" w="40" h="40"/>
+            </attributes>
+          </vertex>
+          <decorator type="AND_split">
+            <position>13</position>
+            <attributes>
+              <bounds x="203" y="364" w="13" h="40"/>
+            </attributes>
+          </decorator>
+        </container>
+        <container id="T_3">
+          <vertex>
+            <attributes>
+              <bounds x="1,670" y="364" w="40" h="40"/>
+            </attributes>
+          </vertex>
+          <decorator type="AND_join">
+            <position>12</position>
+            <attributes>
+              <bounds x="1,658" y="364" w="13" h="40"/>
+            </attributes>
+          </decorator>
+        </container>
+        <container id="Approve_Shipment_Payment_Order">
+          <vertex>
+            <attributes>
+              <bounds x="736" y="759" w="40" h="40"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="697" y="798" w="120" h="60"/>
+            </attributes>
+          </label>
+          <decorator type="XOR_split">
+            <position>13</position>
+            <attributes>
+              <bounds x="775" y="759" w="13" h="40"/>
+            </attributes>
+          </decorator>
+          <decorator type="XOR_join">
+            <position>12</position>
+            <attributes>
+              <bounds x="724" y="759" w="13" h="40"/>
+            </attributes>
+          </decorator>
+        </container>
+        <container id="Update_Shipment_Payment_Order">
+          <vertex>
+            <attributes>
+              <bounds x="737" y="977" w="40" h="40"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="696" y="1,017" w="120" h="60"/>
+            </attributes>
+          </label>
+        </container>
+        <container id="T">
+          <vertex>
+            <attributes>
+              <bounds x="1,514" y="606" w="41" h="41"/>
+            </attributes>
+          </vertex>
+          <decorator type="XOR_join">
+            <position>12</position>
+            <attributes>
+              <bounds x="1,502" y="606" w="14" h="41"/>
+            </attributes>
+          </decorator>
+        </container>
+        <container id="Issue_Debit_Adjusment">
+          <vertex>
+            <attributes>
+              <bounds x="1,048" y="992" w="40" h="40"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="1,008" y="1,033" w="120" h="40"/>
+            </attributes>
+          </label>
+        </container>
+        <flow source="Issue_Shipment_Remittance_Advice" target="T">
+          <ports in="13" out="2"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+            <points>
+              <value x="538" y="494.5"/>
+              <value x="1,502.015" y="626.45"/>
+            </points>
+          </attributes>
+        </flow>
+        <flow source="Approve_Shipment_Payment_Order" target="Update_Shipment_Payment_Order">
+          <label>[S.order not approved]</label>
+          <ports in="2" out="13"/>
+          <attributes>
+            <offset x="0" y="0"/>
+            <labelposition x="692.623" y="-70.917"/>
+            <lineStyle>11</lineStyle>
+            <points>
+              <value x="787" y="778.5"/>
+              <value x="848" y="892"/>
+              <value x="776" y="996.5"/>
+            </points>
+          </attributes>
+        </flow>
+        <flow source="T_3" target="OutputCondition_3">
+          <ports in="13" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="T_4" target="T_1">
+          <label>Payment for the freight</label>
+          <ports in="0" out="12"/>
+          <attributes>
+            <offset x="0" y="0"/>
+            <labelposition x="293" y="-79"/>
+            <lineStyle>11</lineStyle>
+            <points>
+              <value x="209" y="364"/>
+              <value x="297" y="186.5"/>
+            </points>
+          </attributes>
+        </flow>
+        <flow source="Issue_Shipment_Invoice" target="Issue_Shipment_Payment_Order">
+          <label>[else]</label>
+          <ports in="4" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="Process_Freight_Payment" target="T_3">
+          <ports in="13" out="2"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="Produce_Freight_Invoice" target="T_2">
+          <ports in="13" out="2"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="Issue_Credit_Adjusment" target="T">
+          <label>account settled</label>
+          <ports in="13" out="2"/>
+          <attributes>
+            <offset x="0" y="0"/>
+            <labelposition x="496" y="74"/>
+            <lineStyle>11</lineStyle>
+            <points>
+              <value x="1,499.615" y="793.926"/>
+              <value x="1,502.015" y="626.45"/>
+            </points>
+          </attributes>
+        </flow>
+        <flow source="Issue_Shipment_Payment_Order" target="Approve_Shipment_Payment_Order">
+          <ports in="13" out="2"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="T_1" target="Produce_Freight_Invoice">
+          <label>[invoice required</label>
+          <ports in="2" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="Issue_Debit_Adjusment" target="Process_Shipment_Payment">
+          <label>garis1</label>
+          <ports in="12" out="2"/>
+          <attributes>
+            <offset x="0" y="-0"/>
+            <labelposition x="508.899" y="-30.52"/>
+            <lineStyle>11</lineStyle>
+            <points>
+              <value x="1,048" y="1,011.5"/>
+              <value x="980" y="892"/>
+              <value x="1,040" y="787.5"/>
+            </points>
+          </attributes>
+        </flow>
+        <flow source="T" target="T_3">
+          <ports in="13" out="2"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="T_2" target="Process_Freight_Payment">
+          <ports in="13" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="Issue_Shipment_Invoice" target="Issue_Shipment_Remittance_Advice">
+          <label>[Pre-paid shipment]</label>
+          <ports in="0" out="12"/>
+          <attributes>
+            <offset x="0" y="-0"/>
+            <labelposition x="571" y="47"/>
+            <lineStyle>11</lineStyle>
+            <points>
+              <value x="304.5" y="621"/>
+              <value x="499" y="494.5"/>
+            </points>
+          </attributes>
+        </flow>
+        <flow source="InputCondition_3" target="T_4">
+          <ports in="13" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="Process_Shipment_Payment" target="Issue_Credit_Adjusment">
+          <label>[Payment incorrect due to overcharge]</label>
+          <ports in="2" out="12"/>
+          <attributes>
+            <offset x="0" y="0"/>
+            <labelposition x="567" y="16"/>
+            <lineStyle>11</lineStyle>
+            <points>
+              <value x="1,091" y="787.5"/>
+              <value x="1,468.615" y="793.926"/>
+            </points>
+          </attributes>
+        </flow>
+        <flow source="Update_Shipment_Payment_Order" target="Approve_Shipment_Payment_Order">
+          <label>garis2</label>
+          <ports in="12" out="2"/>
+          <attributes>
+            <offset x="0" y="0"/>
+            <labelposition x="493" y="-49"/>
+            <lineStyle>11</lineStyle>
+            <points>
+              <value x="737" y="996.5"/>
+              <value x="668" y="876"/>
+              <value x="724" y="778.5"/>
+            </points>
+          </attributes>
+        </flow>
+        <flow source="T_4" target="Issue_Shipment_Invoice">
+          <label>Payment for the shipment</label>
+          <ports in="4" out="12"/>
+          <attributes>
+            <offset x="-0" y="0"/>
+            <labelposition x="485" y="81"/>
+            <lineStyle>11</lineStyle>
+            <points>
+              <value x="209" y="403"/>
+              <value x="259.5" y="640.5"/>
+            </points>
+          </attributes>
+        </flow>
+        <flow source="Process_Shipment_Payment" target="T">
+          <label>[Payment correct]</label>
+          <ports in="2" out="2"/>
+          <attributes>
+            <offset x="0" y="0"/>
+            <labelposition x="440" y="-38"/>
+            <lineStyle>11</lineStyle>
+            <points>
+              <value x="1,091" y="787.5"/>
+              <value x="1,502.015" y="626.45"/>
+            </points>
+          </attributes>
+        </flow>
+        <flow source="Process_Shipment_Payment" target="Issue_Debit_Adjusment">
+          <label>[Payment incorrect due to underpayment]</label>
+          <ports in="2" out="13"/>
+          <attributes>
+            <offset x="23.502" y="46.386"/>
+            <labelposition x="498.066" y="-107.056"/>
+            <lineStyle>11</lineStyle>
+            <points>
+              <value x="1,091" y="787.5"/>
+              <value x="1,148" y="888"/>
+              <value x="1,087" y="1,011.5"/>
+            </points>
+          </attributes>
+        </flow>
+        <flow source="T_1" target="T_2">
+          <label>[else]</label>
+          <ports in="2" out="2"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="Approve_Shipment_Payment_Order" target="Process_Shipment_Payment">
+          <label>[S.order approved]</label>
+          <ports in="2" out="2"/>
+          <attributes>
+            <offset x="0" y="-0"/>
+            <labelposition x="489.132" y="21.111"/>
+            <lineStyle>11</lineStyle>
+            <points>
+              <value x="787" y="365.5"/>
+              <value x="1,040" y="374.5"/>
+            </points>
+          </attributes>
+        </flow>
+      </net>
+      <net id="Carrier_Appointment" bgColor="-6684775">
+        <bounds x="0" y="-120" w="1789" h="799"/>
+        <frame x="0" y="0" w="1299" h="604"/>
+        <viewport x="0" y="0" w="1299" h="604"/>
+        <scale>0.8099999999999992</scale>
+        <vertex id="C_14">
+          <attributes>
+            <bounds x="1,675" y="603" w="32" h="32"/>
+          </attributes>
+        </vertex>
+        <vertex id="C_13">
+          <attributes>
+            <bounds x="1,672" y="447" w="32" h="32"/>
+          </attributes>
+        </vertex>
+        <vertex id="C_12">
+          <attributes>
+            <bounds x="872" y="868" w="32" h="32"/>
+          </attributes>
+        </vertex>
+        <vertex id="C_11">
+          <attributes>
+            <bounds x="866" y="668" w="32" h="32"/>
+          </attributes>
+        </vertex>
+        <vertex id="C_10">
+          <attributes>
+            <bounds x="1,396" y="516" w="32" h="32"/>
+          </attributes>
+        </vertex>
+        <vertex id="InputCondition_2">
+          <attributes>
+            <bounds x="36" y="332" w="32" h="32"/>
+          </attributes>
+        </vertex>
+        <vertex id="C_3">
+          <attributes>
+            <bounds x="264" y="232" w="32" h="32"/>
+          </attributes>
+        </vertex>
+        <vertex id="C_5">
+          <attributes>
+            <bounds x="268" y="428" w="32" h="32"/>
+          </attributes>
+        </vertex>
+        <vertex id="C_4">
+          <attributes>
+            <bounds x="428" y="232" w="32" h="32"/>
+          </attributes>
+        </vertex>
+        <vertex id="OutputCondition_2">
+          <attributes>
+            <bounds x="2,152" y="516" w="32" h="32"/>
+          </attributes>
+        </vertex>
+        <vertex id="C_7">
+          <attributes>
+            <bounds x="260" y="60" w="32" h="32"/>
+          </attributes>
+        </vertex>
+        <vertex id="C_6">
+          <attributes>
+            <bounds x="428" y="428" w="32" h="32"/>
+          </attributes>
+        </vertex>
+        <vertex id="C_9">
+          <attributes>
+            <bounds x="852" y="452" w="32" h="32"/>
+          </attributes>
+        </vertex>
+        <vertex id="C_8">
+          <attributes>
+            <bounds x="624" y="760" w="33" h="33"/>
+          </attributes>
+        </vertex>
+        <container id="Arrange_Delivery_Appointment_3">
+          <vertex>
+            <attributes>
+              <bounds x="1,018" y="868" w="32" h="32"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="985" y="901" w="96" h="60"/>
+            </attributes>
+          </label>
+        </container>
+        <container id="Arrange_Delivery_Appointment_2">
+          <vertex>
+            <attributes>
+              <bounds x="718" y="668" w="32" h="32"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="685" y="702" w="96" h="60"/>
+            </attributes>
+          </label>
+        </container>
+        <container id="Produce_Shipment_Notice">
+          <vertex>
+            <attributes>
+              <bounds x="1,876" y="515" w="32" h="32"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="1,838" y="548" w="96" h="60"/>
+            </attributes>
+          </label>
+          <decorator type="XOR_join">
+            <position>12</position>
+            <attributes>
+              <bounds x="1,866" y="515" w="11" h="32"/>
+            </attributes>
+          </decorator>
+        </container>
+        <container id="Arrange_Delivery_Appointment_1">
+          <vertex>
+            <attributes>
+              <bounds x="1,396" y="320" w="32" h="32"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="1,364" y="352" w="96" h="60"/>
+            </attributes>
+          </label>
+        </container>
+        <container id="Create_Bill_of_Lading">
+          <vertex>
+            <attributes>
+              <bounds x="1,128" y="320" w="32" h="32"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="1,097" y="351" w="96" h="42"/>
+            </attributes>
+          </label>
+          <decorator type="XOR_split">
+            <position>13</position>
+            <attributes>
+              <bounds x="1,159" y="320" w="11" h="32"/>
+            </attributes>
+          </decorator>
+          <decorator type="AND_join">
+            <position>12</position>
+            <attributes>
+              <bounds x="1,118" y="320" w="11" h="32"/>
+            </attributes>
+          </decorator>
+        </container>
+        <container id="T_15">
+          <vertex>
+            <attributes>
+              <bounds x="1,397" y="754" w="32" h="32"/>
+            </attributes>
+          </vertex>
+          <decorator type="OR_join">
+            <position>12</position>
+            <attributes>
+              <bounds x="1,387" y="754" w="11" h="32"/>
+            </attributes>
+          </decorator>
+        </container>
+        <vertex id="T_14">
+          <attributes>
+            <bounds x="1,260" y="665" w="32" h="32"/>
+          </attributes>
+        </vertex>
+        <container id="T_6">
+          <vertex>
+            <attributes>
+              <bounds x="176" y="332" w="32" h="32"/>
+            </attributes>
+          </vertex>
+          <decorator type="AND_split">
+            <position>13</position>
+            <attributes>
+              <bounds x="207" y="332" w="11" h="32"/>
+            </attributes>
+          </decorator>
+        </container>
+        <vertex id="T_13">
+          <attributes>
+            <bounds x="1,256" y="863" w="32" h="32"/>
+          </attributes>
+        </vertex>
+        <container id="T_12">
+          <vertex>
+            <attributes>
+              <bounds x="1,125" y="758" w="33" h="32"/>
+            </attributes>
+          </vertex>
+          <decorator type="OR_split">
+            <position>13</position>
+            <attributes>
+              <bounds x="1,156" y="758" w="12" h="32"/>
+            </attributes>
+          </decorator>
+          <decorator type="XOR_join">
+            <position>12</position>
+            <attributes>
+              <bounds x="1,115" y="758" w="12" h="32"/>
+            </attributes>
+          </decorator>
+        </container>
+        <container id="T_11">
+          <vertex>
+            <attributes>
+              <bounds x="744" y="328" w="32" h="33"/>
+            </attributes>
+          </vertex>
+          <decorator type="AND_split">
+            <position>13</position>
+            <attributes>
+              <bounds x="775" y="328" w="11" h="33"/>
+            </attributes>
+          </decorator>
+        </container>
+        <container id="Create_Career_Manifest">
+          <vertex>
+            <attributes>
+              <bounds x="1,176" y="124" w="32" h="32"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="1,144" y="156" w="97" h="41"/>
+            </attributes>
+          </label>
+        </container>
+        <container id="Arrange_Pickup_Appointment">
+          <vertex>
+            <attributes>
+              <bounds x="644" y="124" w="32" h="32"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="612" y="156" w="97" h="61"/>
+            </attributes>
+          </label>
+        </container>
+        <container id="Estimate_Trailer_Usage">
+          <vertex>
+            <attributes>
+              <bounds x="356" y="232" w="32" h="32"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="324" y="264" w="96" h="40"/>
+            </attributes>
+          </label>
+        </container>
+        <container id="Arrange_Delivery_Appointment">
+          <vertex>
+            <attributes>
+              <bounds x="1,016" y="452" w="32" h="32"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="985" y="483" w="98" h="63"/>
+            </attributes>
+          </label>
+        </container>
+        <container id="Prepare_Transportation_Quote">
+          <vertex>
+            <attributes>
+              <bounds x="504" y="328" w="32" h="32"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="472" y="360" w="96" h="60"/>
+            </attributes>
+          </label>
+          <decorator type="XOR_split">
+            <position>13</position>
+            <attributes>
+              <bounds x="535" y="328" w="11" h="32"/>
+            </attributes>
+          </decorator>
+          <decorator type="AND_join">
+            <position>12</position>
+            <attributes>
+              <bounds x="494" y="328" w="11" h="32"/>
+            </attributes>
+          </decorator>
+        </container>
+        <container id="Modify_Delivery_Appointment_1">
+          <vertex>
+            <attributes>
+              <bounds x="1,545" y="447" w="32" h="32"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="1,512" y="481" w="96" h="60"/>
+            </attributes>
+          </label>
+        </container>
+        <container id="Prepare_Route_Guide">
+          <vertex>
+            <attributes>
+              <bounds x="356" y="428" w="32" h="32"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="324" y="460" w="96" h="40"/>
+            </attributes>
+          </label>
+        </container>
+        <container id="Modify_Delivery_Appointment">
+          <vertex>
+            <attributes>
+              <bounds x="1,784" y="603" w="32" h="32"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="1,753" y="635" w="96" h="60"/>
+            </attributes>
+          </label>
+        </container>
+        <container id="Arrange_Pickup_Appointment_1">
+          <vertex>
+            <attributes>
+              <bounds x="944" y="240" w="32" h="32"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="912" y="272" w="96" h="60"/>
+            </attributes>
+          </label>
+        </container>
+        <container id="Arrange_Pickup_Appointment_2">
+          <vertex>
+            <attributes>
+              <bounds x="718" y="867" w="32" h="32"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="685" y="897" w="96" h="60"/>
+            </attributes>
+          </label>
+        </container>
+        <container id="Arrange_Pickup_Appointment_3">
+          <vertex>
+            <attributes>
+              <bounds x="1,013" y="670" w="32" h="32"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="982" y="702" w="96" h="60"/>
+            </attributes>
+          </label>
+        </container>
+        <container id="Modify_Pickup_Appointment_1">
+          <vertex>
+            <attributes>
+              <bounds x="1,784" y="447" w="32" h="32"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="1,753" y="480" w="98" h="40"/>
+            </attributes>
+          </label>
+        </container>
+        <container id="Arange_Delivery_Appointment">
+          <vertex>
+            <attributes>
+              <bounds x="928" y="124" w="32" h="32"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="896" y="156" w="97" h="61"/>
+            </attributes>
+          </label>
+        </container>
+        <container id="Modify_Pickup_Appointment">
+          <vertex>
+            <attributes>
+              <bounds x="1,550" y="603" w="32" h="32"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="1,517" y="637" w="96" h="40"/>
+            </attributes>
+          </label>
+        </container>
+        <container id="Carrier_Timeout">
+          <vertex>
+            <attributes>
+              <bounds x="376" y="60" w="32" h="32"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="344" y="92" w="96" h="20"/>
+            </attributes>
+          </label>
+        </container>
+        <flow source="C_12" target="Arrange_Delivery_Appointment_3">
+          <ports in="13" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="T_15" target="C_10">
+          <ports in="10" out="11"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="T_6" target="C_3">
+          <ports in="2" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="C_12" target="T_12">
+          <label>line 2</label>
+          <ports in="11" out="0"/>
+          <attributes>
+            <offset x="0" y="-0"/>
+            <labelposition x="564.172" y="31.722"/>
+            <lineStyle>12</lineStyle>
+            <points>
+              <value x="887.5" y="899"/>
+              <value x="1,056" y="932"/>
+              <value x="1,097" y="789"/>
+            </points>
+          </attributes>
+        </flow>
+        <flow source="T_6" target="C_5">
+          <ports in="2" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="T_11" target="C_9">
+          <ports in="2" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="C_10" target="Modify_Pickup_Appointment">
+          <ports in="13" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="C_3" target="Estimate_Trailer_Usage">
+          <ports in="13" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="Prepare_Transportation_Quote" target="Arrange_Pickup_Appointment">
+          <label>[Single Package(SP)]</label>
+          <ports in="2" out="12"/>
+          <attributes>
+            <offset x="-0" y="0"/>
+            <labelposition x="623.971" y="55.501"/>
+            <lineStyle>11</lineStyle>
+            <points>
+              <value x="545" y="347.5"/>
+              <value x="640" y="187.5"/>
+            </points>
+          </attributes>
+        </flow>
+        <flow source="Arrange_Pickup_Appointment" target="Arange_Delivery_Appointment">
+          <ports in="13" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="Arrange_Pickup_Appointment_3" target="T_12">
+          <ports in="13" out="1"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="C_9" target="Create_Bill_of_Lading">
+          <label>line 1</label>
+          <ports in="11" out="0"/>
+          <attributes>
+            <offset x="-0" y="0"/>
+            <labelposition x="534" y="17"/>
+            <lineStyle>13</lineStyle>
+            <points>
+              <value x="867.5" y="483"/>
+              <value x="1,096" y="564"/>
+              <value x="1,123" y="351"/>
+            </points>
+          </attributes>
+        </flow>
+        <flow source="T_6" target="C_7">
+          <ports in="0" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="Arrange_Delivery_Appointment_2" target="C_11">
+          <ports in="13" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="Carrier_Timeout" target="OutputCondition_2">
+          <label>order preparation took too long</label>
+          <ports in="13" out="10"/>
+          <attributes>
+            <offset x="0" y="-0"/>
+            <labelposition x="245.165" y="14.113"/>
+            <lineStyle>11</lineStyle>
+            <points>
+              <value x="407" y="75.5"/>
+              <value x="2,160" y="72"/>
+              <value x="2,167.5" y="516"/>
+            </points>
+          </attributes>
+        </flow>
+        <flow source="T_13" target="T_15">
+          <ports in="13" out="0"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="T_12" target="C_10">
+          <label>[else:both]</label>
+          <ports in="0" out="11"/>
+          <attributes>
+            <offset x="0" y="0"/>
+            <labelposition x="357.288" y="42.5"/>
+            <lineStyle>11</lineStyle>
+            <points>
+              <value x="1,161.753" y="758"/>
+              <value x="1,164" y="548"/>
+              <value x="1,411.5" y="547"/>
+            </points>
+          </attributes>
+        </flow>
+        <flow source="C_7" target="Carrier_Timeout">
+          <ports in="13" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="Arrange_Pickup_Appointment_1" target="Create_Bill_of_Lading">
+          <ports in="13" out="2"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="Arrange_Delivery_Appointment" target="Create_Bill_of_Lading">
+          <ports in="13" out="2"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="T_14" target="T_15">
+          <ports in="13" out="4"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="Modify_Delivery_Appointment" target="Produce_Shipment_Notice">
+          <ports in="13" out="0"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="C_14" target="Modify_Delivery_Appointment">
+          <ports in="13" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="C_4" target="Prepare_Transportation_Quote">
+          <ports in="13" out="2"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="Prepare_Transportation_Quote" target="T_11">
+          <label>[Less Than Truck Load(LTL)]</label>
+          <ports in="2" out="12"/>
+          <attributes>
+            <labelposition x="517.588" y="18.5"/>
+            <lineStyle>11</lineStyle>
+            <points>
+              <value x="545" y="347.5"/>
+              <value x="744" y="347.5"/>
+            </points>
+          </attributes>
+        </flow>
+        <flow source="Create_Bill_of_Lading" target="C_10">
+          <label>[else]</label>
+          <ports in="4" out="10"/>
+          <attributes>
+            <offset x="0" y="0"/>
+            <labelposition x="275.67" y="-27.469"/>
+            <lineStyle>11</lineStyle>
+            <points>
+              <value x="1,164" y="351"/>
+              <value x="1,164" y="516"/>
+              <value x="1,411.5" y="516"/>
+            </points>
+          </attributes>
+        </flow>
+        <flow source="Arrange_Delivery_Appointment_3" target="T_12">
+          <ports in="13" out="3"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="C_10" target="Produce_Shipment_Notice">
+          <ports in="13" out="2"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="T_11" target="Arrange_Pickup_Appointment_1">
+          <ports in="2" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="C_9" target="Arrange_Delivery_Appointment">
+          <ports in="13" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="Modify_Delivery_Appointment_1" target="C_13">
+          <ports in="13" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="C_5" target="Prepare_Route_Guide">
+          <ports in="13" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="Create_Bill_of_Lading" target="Arrange_Delivery_Appointment_1">
+          <label>[no delivery information]</label>
+          <ports in="2" out="12"/>
+          <attributes>
+            <labelposition x="489" y="-24"/>
+            <lineStyle>11</lineStyle>
+            <points>
+              <value x="1,169" y="335.5"/>
+              <value x="1,396" y="335.5"/>
+            </points>
+          </attributes>
+        </flow>
+        <flow source="Arrange_Delivery_Appointment_1" target="C_10">
+          <ports in="11" out="10"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="C_8" target="T_12">
+          <ports in="13" out="2"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="C_10" target="Modify_Delivery_Appointment_1">
+          <ports in="13" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="C_14" target="Produce_Shipment_Notice">
+          <ports in="10" out="2"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+            <points>
+              <value x="1,706.5" y="607"/>
+              <value x="1,866" y="530.5"/>
+            </points>
+          </attributes>
+        </flow>
+        <flow source="Arrange_Pickup_Appointment_2" target="C_12">
+          <ports in="13" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="Produce_Shipment_Notice" target="OutputCondition_2">
+          <label>the freight is physically picked up</label>
+          <ports in="13" out="12"/>
+          <attributes>
+            <offset x="0" y="0"/>
+            <labelposition x="473.886" y="25.026"/>
+            <lineStyle>11</lineStyle>
+            <points>
+              <value x="1,907" y="530.5"/>
+              <value x="2,152" y="531.5"/>
+            </points>
+          </attributes>
+        </flow>
+        <flow source="C_11" target="T_12">
+          <label>line 3</label>
+          <ports in="10" out="4"/>
+          <attributes>
+            <offset x="0" y="0"/>
+            <labelposition x="639.673" y="-47.636"/>
+            <lineStyle>12</lineStyle>
+            <points>
+              <value x="881.5" y="668"/>
+              <value x="1,033" y="632"/>
+              <value x="1,097" y="758"/>
+            </points>
+          </attributes>
+        </flow>
+        <flow source="C_8" target="Arrange_Pickup_Appointment_2">
+          <ports in="11" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="C_11" target="Arrange_Pickup_Appointment_3">
+          <ports in="13" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="Modify_Pickup_Appointment_1" target="Produce_Shipment_Notice">
+          <ports in="13" out="4"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="Modify_Pickup_Appointment" target="C_14">
+          <ports in="13" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="Create_Career_Manifest" target="Produce_Shipment_Notice">
+          <label>line 4</label>
+          <ports in="13" out="4"/>
+          <attributes>
+            <offset x="0" y="0"/>
+            <labelposition x="489.614" y="14.048"/>
+            <lineStyle>11</lineStyle>
+            <points>
+              <value x="1,211" y="139.5"/>
+              <value x="1,868" y="140"/>
+              <value x="1,875" y="515"/>
+            </points>
+          </attributes>
+        </flow>
+        <flow source="Prepare_Route_Guide" target="C_6">
+          <ports in="13" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="Arange_Delivery_Appointment" target="Create_Career_Manifest">
+          <ports in="13" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="C_8" target="Arrange_Delivery_Appointment_2">
+          <ports in="10" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="Prepare_Transportation_Quote" target="C_8">
+          <label>[Truck Load (TL)]</label>
+          <ports in="2" out="12"/>
+          <attributes>
+            <offset x="-0" y="0"/>
+            <labelposition x="622.692" y="-67.668"/>
+            <lineStyle>11</lineStyle>
+            <points>
+              <value x="545" y="347.5"/>
+              <value x="640" y="527.5"/>
+            </points>
+          </attributes>
+        </flow>
+        <flow source="Estimate_Trailer_Usage" target="C_4">
+          <ports in="13" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="C_13" target="Modify_Pickup_Appointment_1">
+          <ports in="13" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="C_13" target="Produce_Shipment_Notice">
+          <ports in="11" out="2"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+            <points>
+              <value x="1,687.5" y="478"/>
+              <value x="1,866" y="530.5"/>
+            </points>
+          </attributes>
+        </flow>
+        <flow source="C_6" target="Prepare_Transportation_Quote">
+          <ports in="13" out="2"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="T_12" target="T_13">
+          <label>[no pickup information]</label>
+          <ports in="2" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="InputCondition_2" target="T_6">
+          <ports in="13" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="T_12" target="T_14">
+          <label>[no delivery information]</label>
+          <ports in="2" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+            <points>
+              <value x="1,143" y="769.5"/>
+              <value x="1,260" y="676.5"/>
+            </points>
+          </attributes>
+        </flow>
+      </net>
+      <net id="Freight_in_Transit" bgColor="-6684775">
+        <bounds x="-5" y="0" w="1305" h="586"/>
+        <frame x="0" y="0" w="1299" h="604"/>
+        <viewport x="0" y="0" w="1299" h="604"/>
+        <scale>0.7649999999999987</scale>
+        <vertex id="InputCondition_4">
+          <attributes>
+            <bounds x="36" y="340" w="56" h="56"/>
+          </attributes>
+        </vertex>
+        <vertex id="C_1">
+          <attributes>
+            <bounds x="744" y="505" w="52" h="52"/>
+          </attributes>
+        </vertex>
+        <vertex id="C_2">
+          <attributes>
+            <bounds x="501" y="189" w="52" h="52"/>
+          </attributes>
+        </vertex>
+        <vertex id="OutputCondition_4">
+          <attributes>
+            <bounds x="1,628" y="328" w="52" h="52"/>
+          </attributes>
+        </vertex>
+        <container id="Initiate_Shipment_Status_Inquiry">
+          <vertex>
+            <attributes>
+              <bounds x="785" y="297" w="53" h="53"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="734" y="349" w="156" h="40"/>
+            </attributes>
+          </label>
+        </container>
+        <container id="Create_Acceptance_Certificate">
+          <vertex>
+            <attributes>
+              <bounds x="1,256" y="43" w="53" h="53"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="1,200" y="95" w="157" h="41"/>
+            </attributes>
+          </label>
+          <decorator type="AND_join">
+            <position>12</position>
+            <attributes>
+              <bounds x="1,240" y="43" w="18" h="53"/>
+            </attributes>
+          </decorator>
+        </container>
+        <container id="Log_Trackpoint_Label_Entry">
+          <vertex>
+            <attributes>
+              <bounds x="979" y="505" w="52" h="52"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="926" y="556" w="156" h="40"/>
+            </attributes>
+          </label>
+        </container>
+        <container id="T_5">
+          <vertex>
+            <attributes>
+              <bounds x="264" y="341" w="52" h="52"/>
+            </attributes>
+          </vertex>
+          <decorator type="AND_split">
+            <position>13</position>
+            <attributes>
+              <bounds x="315" y="341" w="17" h="52"/>
+            </attributes>
+          </decorator>
+        </container>
+        <container id="Issue_Trackpoint_Label">
+          <vertex>
+            <attributes>
+              <bounds x="504" y="504" w="52" h="52"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="446" y="556" w="156" h="20"/>
+            </attributes>
+          </label>
+          <decorator type="XOR_join">
+            <position>12</position>
+            <attributes>
+              <bounds x="488" y="504" w="17" h="52"/>
+            </attributes>
+          </decorator>
+        </container>
+        <flow source="Log_Trackpoint_Label_Entry" target="Create_Acceptance_Certificate">
+          <ports in="13" out="0"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="InputCondition_4" target="T_5">
+          <ports in="13" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="Issue_Trackpoint_Label" target="C_1">
+          <ports in="13" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="C_1" target="Issue_Trackpoint_Label">
+          <label>[More Trackpoints]</label>
+          <ports in="11" out="0"/>
+          <attributes>
+            <offset x="0" y="0"/>
+            <labelposition x="461" y="-28"/>
+            <lineStyle>12</lineStyle>
+            <points>
+              <value x="769.5" y="568"/>
+              <value x="620" y="605"/>
+              <value x="496" y="555"/>
+            </points>
+          </attributes>
+        </flow>
+        <flow source="Initiate_Shipment_Status_Inquiry" target="C_2">
+          <label>line 1</label>
+          <ports in="12" out="11"/>
+          <attributes>
+            <offset x="0" y="-0"/>
+            <labelposition x="479" y="-35"/>
+            <lineStyle>11</lineStyle>
+            <points>
+              <value x="785.163" y="314.918"/>
+              <value x="528" y="328"/>
+              <value x="526.5" y="240"/>
+            </points>
+          </attributes>
+        </flow>
+        <flow source="C_2" target="Initiate_Shipment_Status_Inquiry">
+          <label>line 2</label>
+          <ports in="13" out="10"/>
+          <attributes>
+            <offset x="0" y="0"/>
+            <labelposition x="504.98" y="-34.166"/>
+            <lineStyle>11</lineStyle>
+            <points>
+              <value x="552" y="214.5"/>
+              <value x="808" y="212"/>
+              <value x="810.663" y="297.261"/>
+            </points>
+          </attributes>
+        </flow>
+        <flow source="C_1" target="Log_Trackpoint_Label_Entry">
+          <label>[else]</label>
+          <ports in="13" out="12"/>
+          <attributes>
+            <offset x="0" y="0"/>
+            <labelposition x="466" y="28"/>
+            <lineStyle>11</lineStyle>
+            <points>
+              <value x="795" y="542.5"/>
+              <value x="979" y="534.5"/>
+            </points>
+          </attributes>
+        </flow>
+        <flow source="Create_Acceptance_Certificate" target="OutputCondition_4">
+          <ports in="13" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="T_5" target="C_2">
+          <ports in="0" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="C_2" target="Create_Acceptance_Certificate">
+          <label>The freight is physically delivered</label>
+          <ports in="10" out="2"/>
+          <attributes>
+            <offset x="0" y="-0"/>
+            <labelposition x="501.38" y="-30.093"/>
+            <lineStyle>11</lineStyle>
+            <points>
+              <value x="526.5" y="189"/>
+              <value x="524" y="72"/>
+              <value x="1,240.235" y="77.203"/>
+            </points>
+          </attributes>
+        </flow>
+        <flow source="T_5" target="Issue_Trackpoint_Label">
+          <ports in="4" out="2"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+      </net>
+      <net id="Ordering" bgColor="-6684775">
+        <bounds x="0" y="0" w="1296" h="601"/>
+        <frame x="0" y="0" w="1299" h="604"/>
+        <viewport x="0" y="0" w="1299" h="604"/>
+        <vertex id="C">
+          <attributes>
+            <bounds x="612" y="324" w="32" h="32"/>
+          </attributes>
+        </vertex>
+        <vertex id="InputCondition_1">
+          <attributes>
+            <bounds x="32" y="324" w="32" h="32"/>
+          </attributes>
+        </vertex>
+        <vertex id="OutputCondition_1">
+          <attributes>
+            <bounds x="1,180" y="328" w="32" h="32"/>
+          </attributes>
+        </vertex>
+        <container id="Create_Purchase_Order">
+          <vertex>
+            <attributes>
+              <bounds x="224" y="320" w="32" h="32"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="192" y="352" w="96" h="40"/>
+            </attributes>
+          </label>
+        </container>
+        <container id="Modify_Purchase_Order">
+          <vertex>
+            <attributes>
+              <bounds x="611" y="508" w="32" h="32"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="580" y="540" w="97" h="41"/>
+            </attributes>
+          </label>
+        </container>
+        <container id="Confirm_Purchase_Order">
+          <vertex>
+            <attributes>
+              <bounds x="869" y="320" w="32" h="32"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="840" y="352" w="97" h="41"/>
+            </attributes>
+          </label>
+        </container>
+        <container id="Order_Timeout">
+          <vertex>
+            <attributes>
+              <bounds x="871" y="176" w="32" h="32"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="839" y="208" w="96" h="20"/>
+            </attributes>
+          </label>
+        </container>
+        <container id="Approve_Purchase_Order">
+          <vertex>
+            <attributes>
+              <bounds x="440" y="320" w="32" h="32"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="408" y="352" w="96" h="40"/>
+            </attributes>
+          </label>
+          <decorator type="XOR_split">
+            <position>13</position>
+            <attributes>
+              <bounds x="471" y="320" w="11" h="32"/>
+            </attributes>
+          </decorator>
+          <decorator type="XOR_join">
+            <position>12</position>
+            <attributes>
+              <bounds x="430" y="320" w="11" h="32"/>
+            </attributes>
+          </decorator>
+        </container>
+        <flow source="C" target="Order_Timeout">
+          <ports in="10" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="InputCondition_1" target="Create_Purchase_Order">
+          <ports in="13" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="C" target="Confirm_Purchase_Order">
+          <ports in="13" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+            <points>
+              <value x="643" y="339.5"/>
+              <value x="869" y="335.5"/>
+            </points>
+          </attributes>
+        </flow>
+        <flow source="Confirm_Purchase_Order" target="OutputCondition_1">
+          <ports in="13" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="Approve_Purchase_Order" target="C">
+          <label>[Order approved]</label>
+          <ports in="2" out="12"/>
+          <attributes>
+            <offset x="0" y="0"/>
+            <labelposition x="485" y="18"/>
+            <lineStyle>11</lineStyle>
+            <points>
+              <value x="481" y="335.5"/>
+              <value x="612" y="339.5"/>
+            </points>
+          </attributes>
+        </flow>
+        <flow source="Approve_Purchase_Order" target="OutputCondition_1">
+          <label>[Order not approved]</label>
+          <ports in="0" out="12"/>
+          <attributes>
+            <offset x="9.466" y="-6.777"/>
+            <labelposition x="491.994" y="-16.262"/>
+            <lineStyle>11</lineStyle>
+            <points>
+              <value x="476" y="320"/>
+              <value x="828" y="68"/>
+              <value x="1,180" y="343.5"/>
+            </points>
+          </attributes>
+        </flow>
+        <flow source="C" target="Modify_Purchase_Order">
+          <ports in="11" out="10"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+            <points>
+              <value x="627.5" y="355"/>
+              <value x="642.5" y="508"/>
+            </points>
+          </attributes>
+        </flow>
+        <flow source="Create_Purchase_Order" target="Approve_Purchase_Order">
+          <ports in="13" out="2"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="Order_Timeout" target="OutputCondition_1">
+          <label>[Order not confirmed]</label>
+          <ports in="13" out="12"/>
+          <attributes>
+            <offset x="0" y="-0"/>
+            <labelposition x="345" y="33"/>
+            <lineStyle>11</lineStyle>
+            <points>
+              <value x="902" y="191.5"/>
+              <value x="1,180" y="343.5"/>
+            </points>
+          </attributes>
+        </flow>
+        <flow source="Modify_Purchase_Order" target="Approve_Purchase_Order">
+          <label>[Modify]</label>
+          <ports in="12" out="2"/>
+          <attributes>
+            <offset x="0" y="-0"/>
+            <labelposition x="687.454" y="34.709"/>
+            <lineStyle>11</lineStyle>
+            <points>
+              <value x="611" y="523.5"/>
+              <value x="424" y="524"/>
+              <value x="430" y="335.5"/>
+            </points>
+          </attributes>
+        </flow>
+      </net>
+      <net id="Net" bgColor="-3342490">
+        <bounds x="0" y="0" w="1296" h="601"/>
+        <frame x="0" y="0" w="1299" h="604"/>
+        <viewport x="0" y="0" w="1299" h="604"/>
+        <scale>0.8533333333333357</scale>
+        <vertex id="OutputCondition">
+          <attributes>
+            <bounds x="1,100" y="328" w="32" h="32"/>
+          </attributes>
+        </vertex>
+        <vertex id="InputCondition">
+          <attributes>
+            <bounds x="36" y="328" w="32" h="32"/>
+          </attributes>
+        </vertex>
+        <container id="Payment">
+          <vertex>
+            <attributes>
+              <bounds x="640" y="204" w="32" h="32"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="608" y="236" w="96" h="20"/>
+            </attributes>
+          </label>
+        </container>
+        <container id="Carrier_Appointment">
+          <vertex>
+            <attributes>
+              <bounds x="424" y="328" w="32" h="32"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="396" y="360" w="97" h="41"/>
+            </attributes>
+          </label>
+          <decorator type="OR_split">
+            <position>13</position>
+            <attributes>
+              <bounds x="455" y="328" w="11" h="32"/>
+            </attributes>
+          </decorator>
+        </container>
+        <container id="Freight_in_Transit">
+          <vertex>
+            <attributes>
+              <bounds x="640" y="476" w="32" h="32"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="608" y="508" w="96" h="40"/>
+            </attributes>
+          </label>
+        </container>
+        <container id="Ordering">
+          <vertex>
+            <attributes>
+              <bounds x="192" y="328" w="32" h="32"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="164" y="360" w="96" h="20"/>
+            </attributes>
+          </label>
+          <decorator type="XOR_split">
+            <position>13</position>
+            <attributes>
+              <bounds x="223" y="328" w="11" h="32"/>
+            </attributes>
+          </decorator>
+        </container>
+        <container id="Freight_Delivered">
+          <vertex>
+            <attributes>
+              <bounds x="836" y="328" w="32" h="32"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="800" y="360" w="96" h="40"/>
+            </attributes>
+          </label>
+          <decorator type="AND_join">
+            <position>12</position>
+            <attributes>
+              <bounds x="826" y="328" w="11" h="32"/>
+            </attributes>
+          </decorator>
+        </container>
+        <flow source="Carrier_Appointment" target="Freight_in_Transit">
+          <ports in="0" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="Ordering" target="Carrier_Appointment">
+          <ports in="2" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="Carrier_Appointment" target="OutputCondition">
+          <label>[Order preparation timed out]</label>
+          <ports in="2" out="12"/>
+          <attributes>
+            <labelposition x="500" y="0"/>
+            <lineStyle>13</lineStyle>
+            <points>
+              <value x="465" y="351.25"/>
+              <value x="704" y="588"/>
+              <value x="1,100" y="343.5"/>
+            </points>
+          </attributes>
+        </flow>
+        <flow source="Freight_in_Transit" target="Freight_Delivered">
+          <ports in="13" out="2"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="Freight_Delivered" target="OutputCondition">
+          <ports in="13" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="Carrier_Appointment" target="Payment">
+          <ports in="0" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="Ordering" target="OutputCondition">
+          <label>[Order not approved or timed out]</label>
+          <ports in="2" out="12"/>
+          <attributes>
+            <offset x="0" y="0"/>
+            <labelposition x="507.843" y="25.184"/>
+            <lineStyle>13</lineStyle>
+            <points>
+              <value x="233" y="343.5"/>
+              <value x="652" y="84"/>
+              <value x="1,100" y="343.5"/>
+            </points>
+          </attributes>
+        </flow>
+        <flow source="InputCondition" target="Ordering">
+          <ports in="13" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="Payment" target="Freight_Delivered">
+          <ports in="13" out="2"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+      </net>
+      <net id="Loss_or_Damage_Management">
+        <bounds x="0" y="0" w="1296" h="601"/>
+        <frame x="0" y="0" w="1299" h="604"/>
+        <viewport x="0" y="0" w="1299" h="604"/>
+        <vertex id="OutputCondition_6">
+          <attributes>
+            <bounds x="1,228" y="328" w="32" h="32"/>
+          </attributes>
+        </vertex>
+        <vertex id="InputCondition_6">
+          <attributes>
+            <bounds x="36" y="328" w="32" h="32"/>
+          </attributes>
+        </vertex>
+      </net>
+      <net id="Freight_Delivered" bgColor="-6684775">
+        <bounds x="0" y="-79" w="1281" h="680"/>
+        <frame x="0" y="0" w="1299" h="604"/>
+        <viewport x="0" y="0" w="1299" h="604"/>
+        <vertex id="InputCondition_5">
+          <attributes>
+            <bounds x="36" y="346" w="32" h="32"/>
+          </attributes>
+        </vertex>
+        <vertex id="OutputCondition_5">
+          <attributes>
+            <bounds x="1,228" y="346" w="32" h="32"/>
+          </attributes>
+        </vertex>
+        <container id="Return_Management">
+          <vertex>
+            <attributes>
+              <bounds x="868" y="588" w="32" h="32"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="836" y="620" w="96" h="40"/>
+            </attributes>
+          </label>
+        </container>
+        <container id="Claims_Timeout">
+          <vertex>
+            <attributes>
+              <bounds x="230" y="344" w="32" h="32"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="198" y="376" w="98" h="20"/>
+            </attributes>
+          </label>
+        </container>
+        <container id="Lodge_Loss_or_Damage_Claim_Report">
+          <vertex>
+            <attributes>
+              <bounds x="230" y="176" w="33" h="32"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="198" y="208" w="97" h="60"/>
+            </attributes>
+          </label>
+        </container>
+        <container id="Authorize_Loss_or_Damage_Claim">
+          <vertex>
+            <attributes>
+              <bounds x="570" y="172" w="33" h="32"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="544" y="204" w="96" h="60"/>
+            </attributes>
+          </label>
+          <decorator type="XOR_split">
+            <position>13</position>
+            <attributes>
+              <bounds x="601" y="172" w="12" h="32"/>
+            </attributes>
+          </decorator>
+        </container>
+        <container id="Authorize_Return_Merchandise">
+          <vertex>
+            <attributes>
+              <bounds x="572" y="516" w="36" h="36"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="542" y="552" w="96" h="60"/>
+            </attributes>
+          </label>
+          <decorator type="XOR_split">
+            <position>13</position>
+            <attributes>
+              <bounds x="607" y="516" w="12" h="36"/>
+            </attributes>
+          </decorator>
+        </container>
+        <container id="Loss_or_Damage_Management">
+          <vertex>
+            <attributes>
+              <bounds x="868" y="120" w="32" h="32"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="836" y="152" w="96" h="60"/>
+            </attributes>
+          </label>
+        </container>
+        <container id="Lodge_a_Request_for_Return_Merchandise">
+          <vertex>
+            <attributes>
+              <bounds x="230" y="516" w="33" h="32"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="198" y="548" w="97" h="80"/>
+            </attributes>
+          </label>
+        </container>
+        <flow source="Lodge_a_Request_for_Return_Merchandise" target="Authorize_Return_Merchandise">
+          <ports in="13" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="Authorize_Return_Merchandise" target="OutputCondition_5">
+          <label>[Return not authorized]</label>
+          <ports in="2" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="InputCondition_5" target="Lodge_Loss_or_Damage_Claim_Report">
+          <ports in="10" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="Authorize_Loss_or_Damage_Claim" target="OutputCondition_5">
+          <label>[Claim not authorized]</label>
+          <ports in="2" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="InputCondition_5" target="Lodge_a_Request_for_Return_Merchandise">
+          <ports in="11" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="Loss_or_Damage_Management" target="OutputCondition_5">
+          <ports in="13" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="Return_Management" target="OutputCondition_5">
+          <ports in="13" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="InputCondition_5" target="Claims_Timeout">
+          <ports in="13" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="Authorize_Loss_or_Damage_Claim" target="Loss_or_Damage_Management">
+          <label>[Claim authorized]</label>
+          <ports in="2" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="Authorize_Return_Merchandise" target="Return_Management">
+          <label>[Return authorized]</label>
+          <ports in="2" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="Lodge_Loss_or_Damage_Claim_Report" target="Authorize_Loss_or_Damage_Claim">
+          <ports in="13" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="Claims_Timeout" target="OutputCondition_5">
+          <label>deadline for return or claim expired</label>
+          <ports in="13" out="12"/>
+          <attributes>
+            <offset x="0" y="0"/>
+            <labelposition x="168.599" y="17.163"/>
+            <lineStyle>11</lineStyle>
+            <points>
+              <value x="261" y="359.5"/>
+              <value x="1,228" y="361.5"/>
+            </points>
+          </attributes>
+        </flow>
+      </net>
+    </specification>
+  </layout>
+</specificationSet>
